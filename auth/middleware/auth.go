@@ -22,10 +22,14 @@ func AuthMiddleware(authenticator auth.Authenticator) func(http.Handler) http.Ha
 			}
 
 			log.Printf("Authenticated user: %q", user.ID)
-			ctx := context.WithValue(r.Context(), userKey, user)
+			ctx := SetUserInContext(r.Context(), user)
 			next.ServeHTTP(w, r.WithContext(ctx))
 		})
 	}
+}
+
+func SetUserInContext(ctx context.Context, user *auth.User) context.Context {
+	return context.WithValue(ctx, userKey, user)
 }
 
 func GetUserFromContext(ctx context.Context) *auth.User {
