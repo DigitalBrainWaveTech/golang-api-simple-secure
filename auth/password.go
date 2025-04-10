@@ -10,6 +10,16 @@ func HashPassword(password string) (string, error) {
 	return string(bytes), err
 }
 
+// MustHashPassword hashes a plaintext password and panics on error
+func MustHashPassword(password string) string {
+	hash, err := HashPassword(password)
+	if err != nil {
+		panic(err)
+	}
+
+	return hash
+}
+
 // CheckPasswordHash compares plaintext password to stored hashed one
 func CheckPasswordHash(password, hash string) bool {
 	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))

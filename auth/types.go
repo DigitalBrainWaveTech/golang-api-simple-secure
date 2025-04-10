@@ -3,11 +3,11 @@ package auth
 import "net/http"
 
 type User struct {
-	ID          string
-	Email       string
-	Password    string
-	Roles       []string
-	Permissions []string
+	ID           string
+	Email        string
+	PasswordHash string
+	Roles        []string
+	Permissions  []string
 }
 
 type Token struct {

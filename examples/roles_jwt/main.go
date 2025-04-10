@@ -14,10 +14,10 @@ func main() {
 	secret := "secret"
 	users := map[string]auth.User{
 		"admin@example.com": {
-			ID:       "1",
-			Email:    "admin@example.com",
-			Password: "password123",
-			Roles:    []string{"admin"},
+			ID:           "1",
+			Email:        "admin@example.com",
+			PasswordHash: auth.MustHashPassword("password123"),
+			Roles:        []string{"admin"},
 		},
 	}
 

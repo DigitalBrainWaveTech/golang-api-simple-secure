@@ -17,7 +17,7 @@ var _ auth.Authenticator = (*Authenticator)(nil)
 func NewAPIKeyAuthenticator(expectedKey string) *Authenticator {
 	return &Authenticator{
 		expectedKey: expectedKey,
-		userProvider: providers.NewStaticUserProvider(map[string]auth.User{
+		userProvider: providers.NewStaticUserProviderWithPermissions(map[string]auth.User{
 			"admin": {
 				ID:          "admin",
 				Email:       "admin",

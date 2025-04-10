@@ -13,9 +13,9 @@ import (
 func main() {
 	secret := "secret"
 	user := auth.User{
-		ID:       "1",
-		Email:    "user@example.com",
-		Password: "password123",
+		ID:           "1",
+		Email:        "user@example.com",
+		PasswordHash: auth.MustHashPassword("password123"),
 	}
 
 	provider := providers.NewStaticUserProvider(map[string]auth.User{

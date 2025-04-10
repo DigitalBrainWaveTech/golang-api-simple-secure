@@ -46,7 +46,7 @@ func (p *StaticUserProvider) ValidateCredentials(email, password string) (*auth.
 		return nil, auth.ErrUserNotFound
 	}
 
-	if user.Password != password {
+	if !auth.CheckPasswordHash(password, user.PasswordHash) {
 		return nil, auth.ErrInvalidCredentials
 	}
 

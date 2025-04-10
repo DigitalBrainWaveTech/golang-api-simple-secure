@@ -40,7 +40,7 @@ func (p *MockDBUserProvider) ValidateCredentials(email, password string) (*auth.
 	if err != nil {
 		return nil, err
 	}
-	if u.Password != password {
+	if !auth.CheckPasswordHash(password, u.PasswordHash) {
 		return nil, auth.ErrInvalidCredentials
 	}
 	return u, nil
@@ -50,11 +50,11 @@ func (p *MockDBUserProvider) find(email string) (*auth.User, error) {
 	email = strings.ToLower(email)
 	if email == "developer@example.com" {
 		return &auth.User{
-			ID:          "42",
-			Email:       email,
-			Password:    "hunter2",
-			Roles:       []string{"dev"},
-			Permissions: []string{"deploy_code", "read_logs"},
+			ID:           "42",
+			Email:        email,
+			PasswordHash: "hunter2",
+			Roles:        []string{"dev"},
+			Permissions:  []string{"deploy_code", "read_logs"},
 		}, nil
 	}
 	return nil, auth.ErrUserNotFound
