@@ -21,6 +21,13 @@ go get github.com/DigitalBrainWaveTech/golang-api-simple-secure
 ```
 ## Examples
 
+### Simple API Key Auth Example (Server-to-Server)
+
+This example demonstrates a minimal API key-based authentication flow, ideal for internal services communicating within a closed network.
+
+For more details and implementation examples, refer to
+the [documentation](examples/api_key_simple).
+
 ### Basic JWT Authentication Example
 
 This example demonstrates a minimal setup using static user authentication with JWT.
