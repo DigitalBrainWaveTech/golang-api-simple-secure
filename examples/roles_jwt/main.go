@@ -7,6 +7,7 @@ import (
 	"github.com/DigitalBrainWaveTech/golang-api-simple-secure/auth/jwt"
 	"github.com/DigitalBrainWaveTech/golang-api-simple-secure/auth/middleware"
 	"github.com/DigitalBrainWaveTech/golang-api-simple-secure/auth/providers"
+	"log"
 	"net/http"
 )
 
@@ -34,5 +35,6 @@ func main() {
 		})),
 	))
 
+	log.Println("Server started - listening on :8082")
 	http.ListenAndServe(":8082", mux)
 }

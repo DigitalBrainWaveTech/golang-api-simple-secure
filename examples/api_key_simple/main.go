@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/DigitalBrainWaveTech/golang-api-simple-secure/auth/apikey"
 	"github.com/DigitalBrainWaveTech/golang-api-simple-secure/auth/middleware"
+	"log"
 	"net/http"
 )
 
@@ -18,5 +19,6 @@ func main() {
 		fmt.Fprintf(w, "Hello %s! Secure ping received.", user.Email)
 	})))
 
+	log.Println("Server started - listening on :8085")
 	http.ListenAndServe(":8085", mux)
 }
