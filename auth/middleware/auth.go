@@ -3,6 +3,7 @@ package middleware
 import (
 	"context"
 	"github.com/DigitalBrainWaveTech/golang-api-simple-secure/auth"
+	"log"
 	"net/http"
 )
 
@@ -15,9 +16,12 @@ func AuthMiddleware(authenticator auth.Authenticator) func(http.Handler) http.Ha
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			user, err := authenticator.AuthenticateRequest(r)
 			if err != nil {
+				log.Printf("Authentication failed: %v", err)
 				http.Error(w, "Unauthorized", http.StatusUnauthorized)
 				return
 			}
+
+			log.Printf("Authenticated user: %q", user.ID)
 			ctx := context.WithValue(r.Context(), userKey, user)
 			next.ServeHTTP(w, r.WithContext(ctx))
 		})
