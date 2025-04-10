@@ -4,19 +4,15 @@ A simple solution to adding basic security features to a server-to-server access
 API within your own VPC network.
 
 It uses the standard logging library "log", and is designed to extremely simple to 
-integrate into a Golang application, with no dependencies other than the standard library.
+integrate into a Golang application, with minimal dependencies.
 
 ## Features
 
 - Basic authentication
-- IP whitelisting
-- IP blacklisting
-- Rate limiting
 - Logging
 - API key validation for additional security
 - Detailed request/response auditing
 - Support for role-based access control (RBAC)
-- Configurable request throttling based on endpoint
 
 ## Installation
 
