@@ -3,15 +3,16 @@ package jwt
 import (
 	"github.com/DigitalBrainWaveTech/golang-api-simple-secure/auth"
 	"github.com/golang-jwt/jwt/v5"
+	"strings"
 	"time"
 )
 
 var jwtExpiry = time.Hour * 24
 
-func GenerateJWT(email string, role string, secret string) (*auth.Token, error) {
+func GenerateJWT(email string, roles []string, secret string) (*auth.Token, error) {
 	claims := jwt.MapClaims{
 		"email": email,
-		"role":  role,
+		"roles": roles,
 		"exp":   time.Now().Add(jwtExpiry).Unix(),
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
@@ -40,6 +41,6 @@ func ParseJWT(tokenStr, secret string) (*auth.User, error) {
 
 	return &auth.User{
 		Email: claims["email"].(string),
-		Role:  claims["role"].(string),
+		Roles: strings.Split(claims["roles"].(string), ","),
 	}, nil
 }

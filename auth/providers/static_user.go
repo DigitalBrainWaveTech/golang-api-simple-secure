@@ -11,7 +11,14 @@ type StaticUserProvider struct {
 
 var _ auth.UserProvider = (*StaticUserProvider)(nil)
 
-func NewStaticUserProvider(users map[string]auth.User, permissions auth.PermissionProvider) *StaticUserProvider {
+func NewStaticUserProvider(users map[string]auth.User) *StaticUserProvider {
+	return &StaticUserProvider{
+		users:              users,
+		permissionProvider: nil,
+	}
+}
+
+func NewStaticUserProviderWithPermissions(users map[string]auth.User, permissions auth.PermissionProvider) *StaticUserProvider {
 	return &StaticUserProvider{
 		users:              users,
 		permissionProvider: permissions,

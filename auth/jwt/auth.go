@@ -15,8 +15,11 @@ type Authenticator struct {
 
 var _ auth.Authenticator = (*Authenticator)(nil)
 
-func New(secret string) *Authenticator {
-	return &Authenticator{secret: secret}
+func New(secret string, provider auth.UserProvider) *Authenticator {
+	return &Authenticator{
+		secret:       secret,
+		userProvider: provider,
+	}
 }
 
 func (j *Authenticator) AuthenticateRequest(r *http.Request) (*auth.User, error) {
@@ -32,7 +35,7 @@ func (j *Authenticator) Login(email, password string) (*auth.Token, error) {
 	if err != nil {
 		return nil, fmt.Errorf("invalid credentials: %w", err)
 	}
-	return GenerateJWT(user.Email, user.Role, j.secret)
+	return GenerateJWT(user.Email, user.Roles, j.secret)
 }
 
 func (j *Authenticator) ValidateToken(tokenStr string) (*auth.User, error) {

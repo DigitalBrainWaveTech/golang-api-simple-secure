@@ -1,0 +1,44 @@
+package main
+
+import (
+	"fmt"
+	"github.com/DigitalBrainWaveTech/golang-api-simple-secure/auth"
+	"github.com/DigitalBrainWaveTech/golang-api-simple-secure/auth/jwt"
+	"github.com/DigitalBrainWaveTech/golang-api-simple-secure/auth/middleware"
+	"github.com/DigitalBrainWaveTech/golang-api-simple-secure/auth/providers"
+	"net/http"
+)
+
+func main() {
+	secret := "secret"
+	users := map[string]auth.User{
+		"admin@example.com": {
+			ID:       "1",
+			Email:    "admin@example.com",
+			Password: "password123",
+			Roles:    []string{"admin"},
+		},
+	}
+
+	provider := providers.NewStaticUserProvider(users)
+	authProvider := jwt.New(secret, provider)
+
+	mux := http.NewServeMux()
+
+	mux.Handle("/login", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		token, err := authProvider.Login("admin@example.com", "password123")
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusUnauthorized)
+			return
+		}
+		fmt.Fprintf(w, "Token: %s", token.Value)
+	}))
+
+	mux.Handle("/admin", middleware.AuthMiddleware(authProvider)(
+		middleware.RequireRole("admin")(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			fmt.Fprintln(w, "Welcome admin!")
+		})),
+	))
+
+	http.ListenAndServe(":8082", mux)
+}
