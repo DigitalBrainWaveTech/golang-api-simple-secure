@@ -10,6 +10,7 @@ integrate into a Golang application, with no dependencies other than the standar
 
 - Basic authentication
 - IP whitelisting
+- IP blacklisting
 - Rate limiting
 - Logging
 - API key validation for additional security
