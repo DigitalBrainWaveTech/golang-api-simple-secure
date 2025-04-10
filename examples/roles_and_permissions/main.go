@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/DigitalBrainWaveTech/golang-api-simple-secure/auth"
+	"github.com/DigitalBrainWaveTech/golang-api-simple-secure/auth/handlers"
 	"github.com/DigitalBrainWaveTech/golang-api-simple-secure/auth/jwt"
 	"github.com/DigitalBrainWaveTech/golang-api-simple-secure/auth/middleware"
 	"github.com/DigitalBrainWaveTech/golang-api-simple-secure/auth/providers"
@@ -30,14 +31,7 @@ func main() {
 
 	mux := http.NewServeMux()
 
-	mux.Handle("/login", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		token, err := authProvider.Login("manager@example.com", "password123")
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusUnauthorized)
-			return
-		}
-		fmt.Fprintf(w, "Token: %s", token.Value)
-	}))
+	mux.Handle("/login", handlers.LoginHandler(authProvider))
 
 	mux.Handle("/reports", middleware.AuthMiddleware(authProvider)(
 		middleware.RequirePermission("view_reports")(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
