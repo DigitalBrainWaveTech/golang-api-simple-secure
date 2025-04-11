@@ -6,6 +6,7 @@ import (
 	"github.com/DigitalBrainWaveTech/golang-api-simple-secure/auth/handlers"
 	"github.com/DigitalBrainWaveTech/golang-api-simple-secure/auth/jwt"
 	"github.com/DigitalBrainWaveTech/golang-api-simple-secure/auth/middleware"
+	"github.com/DigitalBrainWaveTech/golang-api-simple-secure/auth/passwords"
 	"github.com/DigitalBrainWaveTech/golang-api-simple-secure/auth/providers"
 	"log"
 	"net/http"
@@ -16,7 +17,7 @@ func main() {
 	user := auth.User{
 		ID:           "1",
 		Email:        "user@example.com",
-		PasswordHash: auth.MustHashPassword("password123"),
+		PasswordHash: passwords.MustHashPassword("password123"),
 	}
 
 	provider := providers.NewStaticUserProvider(map[string]auth.User{

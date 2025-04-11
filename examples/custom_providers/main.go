@@ -6,6 +6,7 @@ import (
 	"github.com/DigitalBrainWaveTech/golang-api-simple-secure/auth/handlers"
 	"github.com/DigitalBrainWaveTech/golang-api-simple-secure/auth/jwt"
 	"github.com/DigitalBrainWaveTech/golang-api-simple-secure/auth/middleware"
+	"github.com/DigitalBrainWaveTech/golang-api-simple-secure/auth/passwords"
 	"log"
 	"net/http"
 	"strings"
@@ -42,7 +43,7 @@ func (p *MockDBUserProvider) ValidateCredentials(email, password string) (*auth.
 	if err != nil {
 		return nil, err
 	}
-	if !auth.CheckPasswordHash(password, u.PasswordHash) {
+	if !passwords.CheckPasswordHash(password, u.PasswordHash) {
 		return nil, auth.ErrInvalidCredentials
 	}
 	return u, nil

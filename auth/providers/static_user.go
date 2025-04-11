@@ -2,6 +2,7 @@ package providers
 
 import (
 	"github.com/DigitalBrainWaveTech/golang-api-simple-secure/auth"
+	"github.com/DigitalBrainWaveTech/golang-api-simple-secure/auth/passwords"
 	"github.com/DigitalBrainWaveTech/golang-api-simple-secure/auth/permissions"
 )
 
@@ -47,7 +48,7 @@ func (p *StaticUserProvider) ValidateCredentials(email, password string) (*auth.
 		return nil, auth.ErrUserNotFound
 	}
 
-	if !auth.CheckPasswordHash(password, user.PasswordHash) {
+	if !passwords.CheckPasswordHash(password, user.PasswordHash) {
 		return nil, auth.ErrInvalidCredentials
 	}
 
