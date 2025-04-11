@@ -7,14 +7,14 @@ import (
 	"github.com/DigitalBrainWaveTech/golang-api-simple-secure/auth/jwt"
 	"github.com/DigitalBrainWaveTech/golang-api-simple-secure/auth/middleware"
 	"github.com/DigitalBrainWaveTech/golang-api-simple-secure/auth/passwords"
-	"github.com/DigitalBrainWaveTech/golang-api-simple-secure/auth/providers"
+	"github.com/DigitalBrainWaveTech/golang-api-simple-secure/auth/users"
 	"log"
 	"net/http"
 )
 
 func main() {
 	secret := "secret"
-	users := map[string]auth.User{
+	user := map[string]auth.User{
 		"admin@example.com": {
 			ID:           "1",
 			Email:        "admin@example.com",
@@ -23,7 +23,7 @@ func main() {
 		},
 	}
 
-	provider := providers.NewStaticUserProvider(users)
+	provider := users.NewStaticUserProvider(user)
 	authProvider := jwt.New(secret, provider)
 
 	mux := http.NewServeMux()

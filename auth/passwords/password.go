@@ -20,7 +20,7 @@ func MustHashPassword(password string) string {
 	return hash
 }
 
-// CheckPasswordHash compares plaintext password to stored hashed one
+// CheckPasswordHash compares plaintext password to a stored, hashed one
 func CheckPasswordHash(password, hash string) bool {
 	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
 	return err == nil

@@ -1,4 +1,4 @@
-package providers
+package permissions
 
 type MapPermissionProvider struct {
 	rolePermissions map[string][]string

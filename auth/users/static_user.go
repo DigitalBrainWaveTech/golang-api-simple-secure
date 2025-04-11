@@ -1,4 +1,4 @@
-package providers
+package users
 
 import (
 	"github.com/DigitalBrainWaveTech/golang-api-simple-secure/auth"

@@ -3,7 +3,8 @@ package apikey
 import (
 	"errors"
 	"github.com/DigitalBrainWaveTech/golang-api-simple-secure/auth"
-	"github.com/DigitalBrainWaveTech/golang-api-simple-secure/auth/providers"
+	"github.com/DigitalBrainWaveTech/golang-api-simple-secure/auth/permissions"
+	"github.com/DigitalBrainWaveTech/golang-api-simple-secure/auth/users"
 	"net/http"
 )
 
@@ -17,14 +18,14 @@ var _ auth.Authenticator = (*SimpleAuthenticator)(nil)
 func NewSimpleAPIKeyAuthenticator(expectedKey string) *SimpleAuthenticator {
 	return &SimpleAuthenticator{
 		expectedKey: expectedKey,
-		userProvider: providers.NewStaticUserProviderWithPermissions(map[string]auth.User{
+		userProvider: users.NewStaticUserProviderWithPermissions(map[string]auth.User{
 			"admin": {
 				ID:          "admin",
 				Email:       "admin",
 				Roles:       []string{"admin"},
 				Permissions: []string{"read", "write"},
 			},
-		}, providers.NewMapPermissionProvider(map[string][]string{
+		}, permissions.NewMapPermissionProvider(map[string][]string{
 			"admin": {"read", "write"},
 		})),
 	}
