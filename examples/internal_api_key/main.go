@@ -13,7 +13,7 @@ func main() {
 	keyID := "internal-001"
 	rawKey := "internal-raw-key"
 
-	hashed := apikey.GenerateHMACAPIKey(rawKey, sharedSecret)
+	hashed := apikey.GenerateInternalAPIKey(rawKey, sharedSecret)
 
 	store := apikey.NewStaticKeyStore(map[string]*apikey.APIKey{
 		keyID: {

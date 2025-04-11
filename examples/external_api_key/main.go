@@ -6,19 +6,18 @@ import (
 
 	"github.com/DigitalBrainWaveTech/golang-api-simple-secure/auth/apikey"
 	"github.com/DigitalBrainWaveTech/golang-api-simple-secure/auth/middleware"
-	"golang.org/x/crypto/bcrypt"
 )
 
 func main() {
 	keyID := "external-001"
 	rawKey := "super-secret-key"
 
-	hashed, _ := bcrypt.GenerateFromPassword([]byte(rawKey), bcrypt.DefaultCost)
+	hashed := apikey.MustGenerateExternalAPIKey(rawKey)
 
 	store := apikey.NewStaticKeyStore(map[string]*apikey.APIKey{
 		keyID: {
 			KeyID:       keyID,
-			KeyHash:     string(hashed),
+			KeyHash:     hashed,
 			Owner:       "partner@example.com",
 			Roles:       []string{"partner"},
 			Permissions: []string{"read_public"},

@@ -41,7 +41,7 @@ func (a *InternalAuthenticator) AuthenticateRequest(r *http.Request) (*auth.User
 		return nil, auth.ErrInvalidCredentials
 	}
 
-	expected := GenerateHMACAPIKey(rawKey, a.sharedSecret)
+	expected := GenerateInternalAPIKey(rawKey, a.sharedSecret)
 	if expected != record.KeyHash {
 		return nil, auth.ErrInvalidCredentials
 	}
