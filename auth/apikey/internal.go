@@ -13,6 +13,8 @@ type InternalAuthenticator struct {
 	sharedSecret string
 }
 
+var _ auth.Authenticator = (*InternalAuthenticator)(nil)
+
 func NewInternalAuthenticator(store KeyStore, sharedSecret string) *InternalAuthenticator {
 	return &InternalAuthenticator{
 		store:        store,

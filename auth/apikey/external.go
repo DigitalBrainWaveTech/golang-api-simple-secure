@@ -13,6 +13,8 @@ type ExternalAuthenticator struct {
 	store KeyStore
 }
 
+var _ auth.Authenticator = (*ExternalAuthenticator)(nil)
+
 func NewExternalAuthenticator(store KeyStore) *ExternalAuthenticator {
 	return &ExternalAuthenticator{store: store}
 }
