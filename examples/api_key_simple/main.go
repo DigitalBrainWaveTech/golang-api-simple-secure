@@ -10,7 +10,7 @@ import (
 
 func main() {
 	apiKey := "super-secret-api-key"
-	authProvider := apikey.NewAPIKeyAuthenticator(apiKey)
+	authProvider := apikey.NewSimpleAPIKeyAuthenticator(apiKey)
 
 	mux := http.NewServeMux()
 

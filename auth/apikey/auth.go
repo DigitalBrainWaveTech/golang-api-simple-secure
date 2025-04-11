@@ -7,15 +7,15 @@ import (
 	"net/http"
 )
 
-type Authenticator struct {
+type SimpleAuthenticator struct {
 	expectedKey  string
 	userProvider auth.UserProvider
 }
 
-var _ auth.Authenticator = (*Authenticator)(nil)
+var _ auth.Authenticator = (*SimpleAuthenticator)(nil)
 
-func NewAPIKeyAuthenticator(expectedKey string) *Authenticator {
-	return &Authenticator{
+func NewSimpleAPIKeyAuthenticator(expectedKey string) *SimpleAuthenticator {
+	return &SimpleAuthenticator{
 		expectedKey: expectedKey,
 		userProvider: providers.NewStaticUserProviderWithPermissions(map[string]auth.User{
 			"admin": {
@@ -30,14 +30,14 @@ func NewAPIKeyAuthenticator(expectedKey string) *Authenticator {
 	}
 }
 
-func NewAPIKeyAuthenticatorWithUserProvider(expectedKey string, userProvider auth.UserProvider) *Authenticator {
-	return &Authenticator{
+func NewAPIKeyAuthenticatorWithUserProvider(expectedKey string, userProvider auth.UserProvider) *SimpleAuthenticator {
+	return &SimpleAuthenticator{
 		expectedKey:  expectedKey,
 		userProvider: userProvider,
 	}
 }
 
-func (a *Authenticator) AuthenticateRequest(r *http.Request) (*auth.User, error) {
+func (a *SimpleAuthenticator) AuthenticateRequest(r *http.Request) (*auth.User, error) {
 	incomingKey := r.Header.Get("X-API-Key")
 	if incomingKey != a.expectedKey {
 		return nil, errors.New("invalid API key")
@@ -51,10 +51,10 @@ func (a *Authenticator) AuthenticateRequest(r *http.Request) (*auth.User, error)
 	return user, nil
 }
 
-func (a *Authenticator) Login(email, password string) (*auth.Token, error) {
+func (a *SimpleAuthenticator) Login(email, password string) (*auth.Token, error) {
 	return nil, errors.New("Login not supported for API key auth")
 }
 
-func (a *Authenticator) ValidateToken(tokenString string) (*auth.User, error) {
+func (a *SimpleAuthenticator) ValidateToken(tokenString string) (*auth.User, error) {
 	return nil, errors.New("Token validation not used in API key auth")
 }
