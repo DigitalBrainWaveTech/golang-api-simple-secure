@@ -355,3 +355,173 @@ func TestDoFunc(t *testing.T) {
 		})
 	}
 }
+
+func TestDoAll(t *testing.T) {
+	type args struct {
+		user        *auth.User
+		permissions []string
+	}
+	tests := []struct {
+		name string
+		args args
+		want bool
+	}{
+
+		{
+			name: "User with sufficient permissions for all",
+			args: args{
+				user: &auth.User{
+					ID:          "9",
+					Email:       "user9@example.com",
+					Roles:       []string{"admin"},
+					Permissions: []string{"create", "read", "update", "delete"},
+				},
+				permissions: []string{"create", "read", "update"},
+			},
+			want: true,
+		},
+		{
+			name: "User with insufficient permissions for all",
+			args: args{
+				user: &auth.User{
+					ID:          "10",
+					Email:       "user10@example.com",
+					Roles:       []string{"editor"},
+					Permissions: []string{"read", "update"},
+				},
+				permissions: []string{"read", "update", "delete"},
+			},
+			want: false,
+		},
+		{
+			name: "Nil user provided",
+			args: args{
+				user:        nil,
+				permissions: []string{"read", "write"},
+			},
+			want: false,
+		},
+		{
+			name: "Empty permissions list with a valid user",
+			args: args{
+				user: &auth.User{
+					ID:          "11",
+					Email:       "user11@example.com",
+					Roles:       []string{"guest"},
+					Permissions: []string{"view"},
+				},
+				permissions: []string{},
+			},
+			want: true,
+		},
+		{
+			name: "Valid user with overlapping permissions",
+			args: args{
+				user: &auth.User{
+					ID:          "12",
+					Email:       "user12@example.com",
+					Roles:       []string{"moderator"},
+					Permissions: []string{"manage", "read", "write"},
+				},
+				permissions: []string{"read", "write"},
+			},
+			want: true,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := DoAll(tt.args.user, tt.args.permissions...); got != tt.want {
+				t.Errorf("DoAll() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestDoAllFunc(t *testing.T) {
+	type args struct {
+		user        *auth.User
+		permissions []string
+		fn          func()
+	}
+	tests := []struct {
+		name string
+		args args
+	}{
+
+		{
+			name: "User with all required permissions and action executed",
+			args: args{
+				user: &auth.User{
+					ID:          "13",
+					Email:       "user13@example.com",
+					Roles:       []string{"admin"},
+					Permissions: []string{"create", "read", "update", "delete"},
+				},
+				permissions: []string{"create", "read", "delete"},
+				fn: func() {
+					t.Log("Action executed successfully for all required permissions")
+				},
+			},
+		},
+		{
+			name: "User missing one required permission",
+			args: args{
+				user: &auth.User{
+					ID:          "14",
+					Email:       "user14@example.com",
+					Roles:       []string{"editor"},
+					Permissions: []string{"read", "update"},
+				},
+				permissions: []string{"read", "update", "delete"},
+				fn: func() {
+					t.Error("This should not be executed as user is missing a required permission")
+				},
+			},
+		},
+		{
+			name: "Nil user provided",
+			args: args{
+				user:        nil,
+				permissions: []string{"read", "write"},
+				fn: func() {
+					t.Error("This should not be executed as user is nil")
+				},
+			},
+		},
+		{
+			name: "Valid user with empty required permissions",
+			args: args{
+				user: &auth.User{
+					ID:          "15",
+					Email:       "user15@example.net",
+					Roles:       []string{"viewer"},
+					Permissions: []string{"read"},
+				},
+				permissions: []string{},
+				fn: func() {
+					t.Log("Action executed as no specific permissions are required")
+				},
+			},
+		},
+		{
+			name: "Valid user with overlapping permissions and action executed",
+			args: args{
+				user: &auth.User{
+					ID:          "16",
+					Email:       "user16@example.org",
+					Roles:       []string{"moderator"},
+					Permissions: []string{"approve", "read", "write"},
+				},
+				permissions: []string{"read", "write"},
+				fn: func() {
+					t.Log("Action executed for overlapping permissions")
+				},
+			},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			DoAllFunc(tt.args.user, tt.args.permissions, tt.args.fn)
+		})
+	}
+}
