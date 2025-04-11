@@ -1,6 +1,8 @@
-package auth
+package permissions
 
-func HasPermission(user *User, permission string) bool {
+import "github.com/DigitalBrainWaveTech/golang-api-simple-secure/auth"
+
+func HasPermission(user *auth.User, permission string) bool {
 	if user == nil {
 		return false
 	}
@@ -12,7 +14,7 @@ func HasPermission(user *User, permission string) bool {
 	return false
 }
 
-func HasAnyPermission(user *User, perms ...string) bool {
+func HasAnyPermission(user *auth.User, perms ...string) bool {
 	if user == nil {
 		return false
 	}

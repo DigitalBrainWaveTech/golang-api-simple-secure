@@ -1,15 +1,18 @@
 package can
 
-import "github.com/DigitalBrainWaveTech/golang-api-simple-secure/auth"
+import (
+	"github.com/DigitalBrainWaveTech/golang-api-simple-secure/auth"
+	"github.com/DigitalBrainWaveTech/golang-api-simple-secure/auth/permissions"
+)
 
 // Do checks if the user has the given permission.
 func Do(user *auth.User, permission string) bool {
-	return auth.HasPermission(user, permission)
+	return permissions.HasPermission(user, permission)
 }
 
 // DoAny checks if the user has *any* of the given permissions.
-func DoAny(user *auth.User, permissions ...string) bool {
-	return auth.HasAnyPermission(user, permissions...)
+func DoAny(user *auth.User, perms ...string) bool {
+	return permissions.HasAnyPermission(user, perms...)
 }
 
 // DoFunc runs a callback only if the user has the given permission.

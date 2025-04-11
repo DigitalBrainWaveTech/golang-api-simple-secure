@@ -2,11 +2,12 @@ package providers
 
 import (
 	"github.com/DigitalBrainWaveTech/golang-api-simple-secure/auth"
+	"github.com/DigitalBrainWaveTech/golang-api-simple-secure/auth/permissions"
 )
 
 type StaticUserProvider struct {
 	users              map[string]auth.User
-	permissionProvider auth.PermissionProvider
+	permissionProvider permissions.PermissionProvider
 }
 
 var _ auth.UserProvider = (*StaticUserProvider)(nil)
@@ -18,7 +19,7 @@ func NewStaticUserProvider(users map[string]auth.User) *StaticUserProvider {
 	}
 }
 
-func NewStaticUserProviderWithPermissions(users map[string]auth.User, permissions auth.PermissionProvider) *StaticUserProvider {
+func NewStaticUserProviderWithPermissions(users map[string]auth.User, permissions permissions.PermissionProvider) *StaticUserProvider {
 	return &StaticUserProvider{
 		users:              users,
 		permissionProvider: permissions,
